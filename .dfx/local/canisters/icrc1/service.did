@@ -1,0 +1,101 @@
+type Account = record { owner : principal; subaccount : opt Subaccount };
+type AccountId = blob;
+type Account__1 = record { owner : principal; subaccount : opt Subaccount };
+type Address = text;
+type CanisterArgs = record {
+  initArgs : InitArgs;
+  upgradeArgs : opt UpgradeArgs;
+};
+type Gas = variant { token : nat; cycles : nat; noFee };
+type ICRC1Canister = service {
+  drc202_canisterId : () -> (principal) query;
+  drc202_events : (opt Address) -> (vec TxnRecord) query;
+  drc202_getConfig : () -> (Setting) query;
+  drc202_pool : () -> (vec record { Txid; nat }) query;
+  drc202_txn : (Txid) -> (opt TxnRecord) query;
+  drc202_txn2 : (Txid) -> (opt TxnRecord);
+  historySize : () -> (nat) query;
+  icrc1_balance_of : (Account__1) -> (nat) query;
+  icrc1_decimals : () -> (nat8) query;
+  icrc1_fee : () -> (nat) query;
+  icrc1_metadata : () -> (vec record { text; Value }) query;
+  icrc1_minting_account : () -> (opt Account__1) query;
+  icrc1_name : () -> (text) query;
+  icrc1_supported_standards : () -> (
+      vec record { url : text; name : text },
+    ) query;
+  icrc1_symbol : () -> (text) query;
+  icrc1_total_supply : () -> (nat) query;
+  icrc1_transfer : (TransferArgs) -> (
+      variant { Ok : nat; Err : TransferError },
+    );
+};
+type InitArgs = record {
+  fee : nat;
+  decimals : nat8;
+  owner : principal;
+  metadata : opt vec Metadata;
+  name : opt text;
+  totalSupply : nat;
+  symbol : opt text;
+};
+type Metadata = record { content : text; name : text };
+type Operation = variant {
+  approve : record { allowance : nat };
+  lockTransfer : record {
+    locked : nat;
+    expiration : Time;
+    decider : AccountId;
+  };
+  transfer : record { action : variant { burn; mint; send } };
+  executeTransfer : record { fallback : nat; lockedTxid : Txid__1 };
+};
+type Setting = record {
+  MAX_STORAGE_TRIES : nat;
+  EN_DEBUG : bool;
+  MAX_CACHE_NUMBER_PER : nat;
+  MAX_CACHE_TIME : nat;
+};
+type Subaccount = blob;
+type Time = int;
+type Timestamp = nat64;
+type Transaction = record {
+  to : AccountId;
+  value : nat;
+  data : opt blob;
+  from : AccountId;
+  operation : Operation;
+};
+type TransferArgs = record {
+  to : Account;
+  fee : opt nat;
+  memo : opt blob;
+  from_subaccount : opt Subaccount;
+  created_at_time : opt Timestamp;
+  amount : nat;
+};
+type TransferError = variant {
+  GenericError : record { message : text; error_code : nat };
+  TemporarilyUnavailable;
+  BadBurn : record { min_burn_amount : nat };
+  Duplicate : record { duplicate_of : nat };
+  BadFee : record { expected_fee : nat };
+  CreatedInFuture : record { ledger_time : nat64 };
+  TooOld;
+  InsufficientFunds : record { balance : nat };
+};
+type Txid = blob;
+type Txid__1 = blob;
+type TxnRecord = record {
+  gas : Gas;
+  msgCaller : opt principal;
+  transaction : Transaction;
+  txid : Txid__1;
+  nonce : nat;
+  timestamp : Time;
+  caller : AccountId;
+  index : nat;
+};
+type UpgradeArgs = record {};
+type Value = variant { Int : int; Nat : nat; Blob : blob; Text : text };
+service : ICRC1Canister

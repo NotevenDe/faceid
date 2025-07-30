@@ -1,0 +1,72 @@
+{
+  "name": "icp_detect",
+  "version": "0.2.0",
+  "description": "Internet Computer starter application",
+  "keywords": [
+    "Internet Computer",
+    "Motoko",
+    "JavaScript",
+    "Canister"
+  ],
+  "scripts": {
+    "build": "webpack",
+    "prebuild": "dfx generate",
+    "start": "webpack serve --mode development --env development",
+    "deploy:local": "dfx deploy --network=local",
+    "deploy:ic": "dfx deploy --network=ic",
+    "generate": "dfx generate backend"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.24.8",
+    "@connect2ic/core": "^0.2.0-beta.24",
+    "@connect2ic/vue": "^0.2.0-beta.24",
+    "@dfinity/agent": "^0.19.3",
+    "@dfinity/auth-client": "^0.19.3",
+    "@dfinity/authentication": "^0.14.2",
+
+    "@dfinity/candid": "^0.19.3",
+    "@dfinity/identity": "^0.19.3",
+    "@dfinity/principal": "^0.19.3",
+    "babel-loader": "^9.1.3",
+    "core-js": "^3.8.3",
+    "css-loader": "^7.1.2",
+    "naive-ui": "^2.39.0",
+    "style-loader": "^4.0.0",
+    "vfonts": "^0.0.3",
+    "vue": "^3.2.13",
+    "vue-loader": "^17.4.2",
+    "vue-router": "^4.0.13",
+    "vue-template-compiler": "^2.7.16"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.9",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "assert": "2.0.0",
+    "buffer": "6.0.3",
+    "copy-webpack-plugin": "^11.0.0",
+    "dotenv": "^16.0.3",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "events": "3.3.0",
+    "html-webpack-plugin": "5.5.0",
+    "process": "0.11.10",
+    "stream-browserify": "3.0.0",
+    "terser-webpack-plugin": "^5.3.3",
+    "util": "0.12.4",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.8.1"
+  },
+  "engines": {
+    "node": "^12 || ^14 || ^16 || ^18 || ^21"
+  },
+  "browserslist": [
+    "last 2 chrome version",
+    "last 2 firefox version",
+    "last 2 safari version",
+    "last 2 edge version"
+  ]
+}
