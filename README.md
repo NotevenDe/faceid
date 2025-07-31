@@ -1,105 +1,32 @@
-# ICP Face Recognition
+IDenty is a next-generation token launchpad powered by on-chain AI.
+Built on the Internet Computer Protocol (ICP), IDenty redefines fair token distribution through fully autonomous biometric recognition. Anyone can launch assets on-chain, with distribution tied not to speed or connections, but to behavior-based AI scoring—ensuring fairness at scale.
 
-This is an ICP smart contract runs face detection and face recognition of user's photo that can be uploaded either from a camera or a local file.
+But IDenty goes far beyond launch mechanics. It introduces a new paradigm for human-AI interaction, identity verification, and behavioral authentication, all fully on-chain.
 
-The smart contract consists of two canisters:
+AI-Powered Interaction, On-Chain
+Forget forms, passwords, or even DIDs. On IDenty, all you need is a camera. Through advanced AI inference running directly on the blockchain, the system can recognize facial features, detect behaviors, and respond in real time—all without ever compromising user privacy. Every interaction is processed in the user’s personal canister, meaning no centralized servers, no data leakage.
 
-- the backend canister embeds the [the Tract ONNX inference engine](https://github.com/sonos/tract) with two ONNX models. One model is used to detect a face in the photo and return its bounding box. Another model is used for computing face embeddings.
-- the frontend canister contains the Web assets such as HTML, JS, CSS that are served to the browser.
+Real-world actions become smart contract inputs:
 
-# Models
+Plant a tree on camera and earn a verifiable environmental badge.
 
-The smart contract uses two models: one for detecting the face and another for recognizing the face.
+Show your face, and verify your identity from anywhere in the world.
 
-## Face detection
+Move, act, or interact, and let AI interpret those actions on-chain.
 
-A face detection model finds the bounding box of a face in the image.
-You can download [Ultraface](https://github.com/onnx/models/tree/main/validated/vision/body_analysis/ultraface) - ultra-lightweight face detection model - [[here](https://github.com/onnx/models/blob/bec48b6a70e5e9042c0badbaafefe4454e072d08/validated/vision/body_analysis/ultraface/models/version-RFB-320.onnx)].
+Everything—and everyone—can become an agent in the blockchain world.
 
-Alternatively, you can run
-```
-./download-face-detection-model.sh
-```
+Rethinking Token Distribution
+Fair doesn’t mean equal, and it certainly doesn’t mean inefficient.
+IDenty introduces a novel distribution model using error-fitting AI. Instead of a flat or winner-takes-all system, users engage in recognition-based challenges, and the results determine allocation. The more accurate your interaction, the more you earn. Bots and sybils can’t fake their way through it—only real behavior counts.
 
-## Face recognition
+On-Chain Identity, Without Centralized KYC
+Traditional KYC is invasive, centralized, and exclusionary. IDenty replaces it with on-chain recognition that’s fast, private, and equitable. There’s no need to submit documents or go through third-party verification. Your identity is validated through behavior, and stored securely in your own canister.
 
-A face recognition model computes a vector embedding of an image with a face.
-You can obtain a pretrained model from [facenet-pytorch](https://github.com/timesler/facenet-pytorch) as follows.
+IDenty also offers verifiable credential services for other projects. Any dApp or platform can integrate these identity proofs via API, creating a unified, secure, and tamper-resistant identity layer across the ICP ecosystem.
 
+Vision for the Future
+Our mission is to rebuild trust in identity systems through transparent, AI-driven protocols. By leveraging the Internet Computer’s unique architecture, we’re building a decentralized foundation for identity, verification, and tokenization—where users own their data, control their interactions, and benefit directly from their participation.
 
-1. Install `python` and `pip`: https://packaging.python.org/en/latest/tutorials/installing-packages/.
-
-2. Install `facenet-pytorch` and  `torch`:
-```
-pip install facenet-pytorch
-pip install torch
-pip install onnx
-```
-
-3. Export ONNX model. Start a python shell and run the following commands or create a python file and run it:
-```
-import torch
-import facenet_pytorch
-resnet = facenet_pytorch.InceptionResnetV1(pretrained='vggface2').eval()
-input = torch.randn(1, 3, 160, 160)
-torch.onnx.export(resnet, input, "face-recognition.onnx", verbose=False, opset_version=11)
-```
-
-4. This should produce `face-recognition.onnx`. Copy the file to the root of this repository.
-
-# Dependencies
-
-Install `dfx`, Rust, etc: https://internetcomputer.org/docs/current/developer-docs/getting-started/hello-world
-
-Install `wasi2ic`:
-- Follow the steps in https://github.com/wasm-forge/wasi2ic
-- Make sure that `wasi2ic` binary is in your `$PATH`.
-
-Install NodeJS dependencies for the frontend:
-
-```
-npm install
-```
-
-Install `wasm-opt`:
-
-```
-cargo install wasm-opt
-```
-
-# Build
-
-```
-dfx start --background
-dfx deploy
-```
-
-If the deployment is successful, the it will show the `frontend` URL.
-Open that URL in browser to interact with the smart contract.
-
-# Chunk uploading of models
-
-Since the models are large, they cannot be embedded into the Wasm binary of the smart contract.
-Instead they should be uploaded separately.
-
-[DecideAI](https://decideai.xyz/) implemented a tool for incremental uploading of models: https://github.com/modclub-app/ic-file-uploader/tree/main.
-
-You can install the tool with
-
-```
-cargo install ic-file-uploader
-```
-
-Afterwards, execute the `upload-models-to-canister.sh` script, which runs the following commands:
-```
-dfx canister call backend clear_face_detection_model_bytes
-dfx canister call backend clear_face_recognition_model_bytes
-ic-file-uploader backend append_face_detection_model_bytes version-RFB-320.onnx
-ic-file-uploader backend append_face_recognition_model_bytes face-recognition.onnx
-dfx canister call backend setup_models
-```
-
-# Credits 
-
-Thanks to [DecideAI](https://decideai.xyz/) for discussions and providing [ic-file-uploader](https://github.com/modclub-app/ic-file-uploader/tree/main).
+As we move forward, we aim to extend the power of Internet Identity, enabling even richer interactions between users and smart contracts—without ever compromising on privacy or autonomy.
 
